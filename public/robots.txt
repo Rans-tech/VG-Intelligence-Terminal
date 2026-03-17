@@ -1,11 +1,11 @@
-# World Monitor - protect API routes from crawlers
+# Veritas Global Intelligence Terminal - protect API routes from crawlers
 User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /tests/
 
-Sitemap: https://www.worldmonitor.app/sitemap.xml
-Sitemap: https://www.worldmonitor.app/blog/sitemap-index.xml
+Sitemap: https://intel.veritasglobal.co/sitemap.xml
+Sitemap: https://intel.veritasglobal.co/blog/sitemap-index.xml
 
 # Allow social media bots for OG previews
 User-agent: Twitterbot

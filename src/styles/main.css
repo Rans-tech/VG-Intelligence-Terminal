@@ -5,11 +5,11 @@
    Theme Colors — overridden by [data-theme="light"] below
    ============================================================ */
 :root {
-  /* Backgrounds */
-  --bg: #0a0a0a;
-  --bg-secondary: #111;
-  --surface: #141414;
-  --surface-hover: #1e1e1e;
+  /* Backgrounds — Veritas Global Intelligence Terminal */
+  --bg: #0B0F14;
+  --bg-secondary: #101520;
+  --surface: #141924;
+  --surface-hover: #1a2030;
   --surface-active: #1a1a2e;
 
   /* Borders */
@@ -24,7 +24,7 @@
   --text-muted: #666;
   --text-faint: #555;
   --text-ghost: #444;
-  --accent: #fff;
+  --accent: #CCA55A;
 
   /* Overlays & shadows */
   --overlay-subtle: rgba(255, 255, 255, 0.03);
@@ -47,14 +47,23 @@
   --panel-bg: #141414;
   --panel-border: #2a2a2a;
 
-  /* Map */
-  --map-bg: #020a08;
-  --map-grid: #0a2a20;
-  --map-country: #0a2018;
-  --map-stroke: #0f5040;
+  /* Map — Veritas dark ocean */
+  --map-bg: #060B12;
+  --map-grid: #0F2435;
+  --map-country: #0a1a2a;
+  --map-stroke: #1a3550;
 
-  /* Font stack */
-  --font-mono: 'SF Mono', 'Monaco', 'Cascadia Code', 'Fira Code', 'DejaVu Sans Mono', 'Liberation Mono', monospace;
+  /* Veritas brand colors */
+  --veritas-gold: #CCA55A;
+  --veritas-gold-dark: #7C5B2E;
+  --veritas-gold-light: #E6D39C;
+  --veritas-blue-light: #AED6E9;
+  --veritas-teal: #457580;
+
+  /* Font stack — Veritas terminal */
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Cascadia Code', 'Fira Code', monospace;
+  --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body-sans: 'IBM Plex Sans', 'Inter', system-ui, sans-serif;
   /* Base body font, controlled by font preference (mono vs system) */
   --font-body-base: var(--font-mono);
   /* Effective body font used throughout the app */
@@ -390,19 +399,58 @@ canvas,
   opacity: 1;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  height: 26px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.logo-text-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+}
+
 .logo {
-  font-weight: bold;
+  font-family: var(--font-ui);
+  font-weight: 700;
   font-size: 14px;
-  letter-spacing: 2px;
-  color: var(--accent);
+  letter-spacing: 3px;
+  color: var(--veritas-gold);
+  line-height: 1.1;
+}
+
+.logo-subtitle {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 8px;
+  letter-spacing: 2.5px;
+  color: var(--text-dim);
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .logo-mobile {
   display: none;
-  font-weight: bold;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-ui);
+  font-weight: 700;
   font-size: 14px;
   letter-spacing: 2px;
-  color: var(--accent);
+  color: var(--veritas-gold);
+}
+
+.logo-icon-mobile {
+  height: 20px;
+  width: auto;
 }
 
 .version {
@@ -656,6 +704,68 @@ canvas,
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+/* Veritas header navigation */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-left: 16px;
+}
+
+.header-nav-item {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 4px 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+
+.header-nav-item:hover {
+  color: var(--veritas-gold);
+}
+
+.header-nav-item.active {
+  color: var(--veritas-gold);
+}
+
+.header-nav-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.header-nav .region-selector {
+  margin: 0;
+}
+
+/* Request Access button */
+.header-access-btn {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #0B0F14;
+  background: var(--veritas-gold);
+  padding: 5px 14px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.header-access-btn:hover {
+  background: var(--veritas-gold-light);
 }
 
 .fullscreen-btn {
@@ -11602,6 +11712,7 @@ a.prediction-link:hover {
   .github-link,
   .region-selector,
   .mobile-settings-btn,
+  .header-nav,
   .header-right {
     display: none !important;
   }
@@ -11865,13 +11976,13 @@ a.prediction-link:hover {
     display: none !important;
   }
 
-  /* Mobile: show "World Monitor" instead of "MONITOR" */
-  .logo {
+  /* Mobile: show compact logo instead of full desktop version */
+  .logo-container {
     display: none;
   }
 
   .logo-mobile {
-    display: inline;
+    display: flex;
   }
 
   /* Mobile: hide "Global Situation" panel title */

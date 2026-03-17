@@ -188,7 +188,7 @@ function renderOverview(area: HTMLElement): void {
   const dashOffset = circumference - (pct / 100) * circumference;
   const ringColor = ready === total ? 'var(--settings-green)' : ready > 0 ? 'var(--settings-blue)' : 'var(--settings-yellow)';
 
-  const wmState = getSecretState('WORLDMONITOR_API_KEY');
+  const wmState = getSecretState('VERITAS_API_KEY');
   const wmStatusText = wmState.present ? 'Active' : 'Not set';
   const wmStatusClass = wmState.present ? 'ok' : 'warn';
   const catCards = SETTINGS_CATEGORIES.map(cat => {
@@ -264,7 +264,7 @@ function initOverviewListeners(area: HTMLElement): void {
   });
 
   area.querySelector('[data-wm-open-pro]')?.addEventListener('click', () => {
-    const url = 'https://worldmonitor.app/pro';
+    const url = 'https://intel.veritasglobal.co/pro';
     void invokeTauri<void>('open_url', { url }).catch(() => window.open(url, '_blank'));
   });
 
@@ -895,7 +895,7 @@ async function initSettingsWindow(): Promise<void> {
         }
 
         if (hasWmKeyChange && wmKeyValue) {
-          await setSecretValue('WORLDMONITOR_API_KEY', wmKeyValue);
+          await setSecretValue('VERITAS_API_KEY', wmKeyValue);
         }
 
         if (hasPending) {

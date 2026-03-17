@@ -116,7 +116,7 @@ test.describe('AI widget builder', () => {
       if (!sessionStorage.getItem('__widget_e2e_init__')) {
         localStorage.clear();
         sessionStorage.clear();
-        localStorage.setItem('worldmonitor-variant', 'happy');
+        localStorage.setItem('veritas-variant', 'happy');
         localStorage.setItem('wm-widget-key', key);
         sessionStorage.setItem('__widget_e2e_init__', '1');
         return;
@@ -328,8 +328,8 @@ test.describe('AI widget builder', () => {
     expect(secondRequest?.conversationHistory?.some((entry) => entry.content.includes('Generated widget: Oil vs Gold'))).toBe(true);
 
     await page.evaluate((widgetId: string) => {
-      localStorage.setItem('worldmonitor-panel-spans', JSON.stringify({ [widgetId]: 2 }));
-      localStorage.setItem('worldmonitor-panel-col-spans', JSON.stringify({ [widgetId]: 3 }));
+      localStorage.setItem('veritas-panel-spans', JSON.stringify({ [widgetId]: 2 }));
+      localStorage.setItem('veritas-panel-col-spans', JSON.stringify({ [widgetId]: 3 }));
     }, storedWidgetMeta!.id);
 
     await page.evaluate(() => {
@@ -343,8 +343,8 @@ test.describe('AI widget builder', () => {
     const cleanedStorage = await page.evaluate(() => {
       return {
         widgets: localStorage.getItem('wm-custom-widgets'),
-        rowSpans: localStorage.getItem('worldmonitor-panel-spans'),
-        colSpans: localStorage.getItem('worldmonitor-panel-col-spans'),
+        rowSpans: localStorage.getItem('veritas-panel-spans'),
+        colSpans: localStorage.getItem('veritas-panel-col-spans'),
       };
     });
     expect(cleanedStorage.widgets).toBe('[]');

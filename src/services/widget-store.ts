@@ -2,8 +2,8 @@ import { loadFromStorage, saveToStorage } from '@/utils';
 import { sanitizeWidgetHtml } from '@/utils/widget-sanitizer';
 
 const STORAGE_KEY = 'wm-custom-widgets';
-const PANEL_SPANS_KEY = 'worldmonitor-panel-spans';
-const PANEL_COL_SPANS_KEY = 'worldmonitor-panel-col-spans';
+const PANEL_SPANS_KEY = 'veritas-panel-spans';
+const PANEL_COL_SPANS_KEY = 'veritas-panel-col-spans';
 const MAX_WIDGETS = 10;
 const MAX_HISTORY = 10;
 const MAX_HTML_CHARS = 50_000;

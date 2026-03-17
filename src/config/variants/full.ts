@@ -1,4 +1,4 @@
-// Full geopolitical variant - worldmonitor.app
+// Full geopolitical variant - intel.veritasglobal.co
 import type { PanelConfig, MapLayers } from '@/types';
 import type { VariantConfig } from './base';
 

@@ -3,7 +3,7 @@ import { fetchLatestRelease } from './_github-release.js';
 // Non-sebuf: returns XML/HTML, stays as standalone Vercel function
 export const config = { runtime: 'edge' };
 
-const RELEASES_PAGE = 'https://github.com/koala73/worldmonitor/releases/latest';
+const RELEASES_PAGE = 'https://github.com/Rans-tech/VG-Intelligence-Terminal/releases/latest';
 
 const PLATFORM_PATTERNS = {
   'windows-exe': (name) => name.endsWith('_x64-setup.exe'),
@@ -15,8 +15,8 @@ const PLATFORM_PATTERNS = {
 };
 
 const VARIANT_IDENTIFIERS = {
-  full: ['worldmonitor'],
-  world: ['worldmonitor'],
+  full: ['veritas-intel', 'veritasintel'],
+  world: ['veritas-intel', 'veritasintel'],
   tech: ['techmonitor'],
   finance: ['financemonitor'],
 };

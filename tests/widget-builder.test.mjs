@@ -102,15 +102,15 @@ describe('widget-agent relay — security', () => {
   it('SSRF guard — allowlist is checked before any fetch call in tool loop', () => {
     const allowlistCheck = relay.indexOf('WIDGET_ALLOWED_ENDPOINTS.has(endpoint)');
     assert.ok(allowlistCheck !== -1, 'WIDGET_ALLOWED_ENDPOINTS.has() check missing');
-    // The fetch call to api.worldmonitor.app must come AFTER the check
-    const fetchCallIdx = relay.indexOf("'https://api.worldmonitor.app'", allowlistCheck);
+    // The fetch call to api.intel.veritasglobal.co must come AFTER the check
+    const fetchCallIdx = relay.indexOf("'https://api.intel.veritasglobal.co'", allowlistCheck);
     assert.ok(
       fetchCallIdx > allowlistCheck,
-      'fetch() to api.worldmonitor.app must appear after allowlist check',
+      'fetch() to api.intel.veritasglobal.co must appear after allowlist check',
     );
   });
 
-  it('SSRF guard — only worldmonitor.app endpoints are in allowlist', () => {
+  it('SSRF guard — only intel.veritasglobal.co endpoints are in allowlist', () => {
     const setStart = relay.indexOf('WIDGET_ALLOWED_ENDPOINTS = new Set');
     assert.ok(setStart !== -1);
     const setBody = relay.slice(setStart, relay.indexOf(']);', setStart) + 2);
@@ -158,7 +158,7 @@ describe('widget-agent relay — security', () => {
     const corsBlock = relay.slice(widgetCorsIdx, widgetCorsIdx + 600);
     // Must NOT define a hardcoded origins array for this specific route
     assert.ok(
-      !corsBlock.includes("['https://worldmonitor.app'"),
+      !corsBlock.includes("['https://intel.veritasglobal.co'"),
       'Do NOT hardcode origins for /widget-agent — reuse getCorsOrigin()',
     );
     // Must reference corsOrigin variable (set by getCorsOrigin earlier)
@@ -675,11 +675,11 @@ describe('proxy routing — widgetAgentUrl', () => {
     );
   });
 
-  it('widgetAgentUrl targets proxy.worldmonitor.app (not toRuntimeUrl)', () => {
+  it('widgetAgentUrl targets proxy.intel.veritasglobal.co (not toRuntimeUrl)', () => {
     // The URL may be in a constant above the function; search the whole file
     assert.ok(
-      proxy.includes('proxy.worldmonitor.app'),
-      'Must target proxy.worldmonitor.app directly (sidecar destroys SSE via arrayBuffer)',
+      proxy.includes('proxy.intel.veritasglobal.co'),
+      'Must target proxy.intel.veritasglobal.co directly (sidecar destroys SSE via arrayBuffer)',
     );
     // Verify the function itself does not use toRuntimeUrl
     const fnIdx = proxy.indexOf('function widgetAgentUrl');
@@ -691,14 +691,14 @@ describe('proxy routing — widgetAgentUrl', () => {
     );
   });
 
-  it('vite.config.ts proxies /widget-agent to proxy.worldmonitor.app', () => {
+  it('vite.config.ts proxies /widget-agent to proxy.intel.veritasglobal.co', () => {
     assert.ok(
       vite.includes('/widget-agent'),
       'vite.config.ts must have proxy entry for /widget-agent',
     );
     assert.ok(
-      vite.includes('proxy.worldmonitor.app'),
-      'Vite proxy target must be proxy.worldmonitor.app',
+      vite.includes('proxy.intel.veritasglobal.co'),
+      'Vite proxy target must be proxy.intel.veritasglobal.co',
     );
   });
 

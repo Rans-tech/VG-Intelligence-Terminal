@@ -1,8 +1,8 @@
 import { t } from '@/services/i18n';
 import { getDismissed, setDismissed } from '@/utils/cross-domain-storage';
 
-const DISMISSED_KEY = 'wm-community-dismissed';
-const DISCUSSION_URL = 'https://github.com/koala73/worldmonitor/discussions/94';
+const DISMISSED_KEY = 'veritas-access-widget-dismissed';
+const CONTACT_URL = 'https://veritasglobal.co/contact';
 
 export function mountCommunityWidget(): void {
   if (getDismissed(DISMISSED_KEY)) return;
@@ -13,8 +13,8 @@ export function mountCommunityWidget(): void {
   widget.innerHTML = `
     <div class="cw-pill">
       <div class="cw-dot"></div>
-      <span class="cw-text">${t('components.community.joinDiscussion')}</span>
-      <a class="cw-cta" href="${DISCUSSION_URL}" target="_blank" rel="noopener">${t('components.community.openDiscussion')}</a>
+      <span class="cw-text">Need deeper intelligence coverage?</span>
+      <a class="cw-cta" href="${CONTACT_URL}" target="_blank" rel="noopener">Request Access</a>
       <button class="cw-close" aria-label="${t('common.close')}">&times;</button>
     </div>
     <button class="cw-dismiss">${t('components.community.dontShowAgain')}</button>

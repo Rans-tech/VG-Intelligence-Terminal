@@ -799,7 +799,7 @@ export class EventHandlerManager implements AppModule {
     await this.exitFullscreenForNavigation();
 
     if (this.ctx.isDesktopApp || options.isLocalDev) {
-      localStorage.setItem('worldmonitor-variant', variant);
+      localStorage.setItem('veritas-variant', variant);
       window.location.reload();
       return;
     }
@@ -923,7 +923,7 @@ export class EventHandlerManager implements AppModule {
       getLocalizedPanelName: (key: string, fallback: string) => this.getLocalizedPanelName(key, fallback),
       resetLayout: () => {
         localStorage.removeItem(this.ctx.PANEL_SPANS_KEY);
-        localStorage.removeItem('worldmonitor-panel-col-spans');
+        localStorage.removeItem('veritas-panel-col-spans');
         localStorage.removeItem(this.ctx.PANEL_ORDER_KEY);
         localStorage.removeItem(this.ctx.PANEL_ORDER_KEY + '-bottom');
         localStorage.removeItem(this.ctx.PANEL_ORDER_KEY + '-bottom-set');

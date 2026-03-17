@@ -1,6 +1,6 @@
-Contact: mailto:elie@worldmonitor.app
-Contact: https://github.com/eliehabib/worldmonitor/security/advisories
-Policy: https://github.com/eliehabib/worldmonitor/security/advisories
+Contact: mailto:security@veritasglobal.co
+Contact: https://github.com/Rans-tech/VG-Intelligence-Terminal/security/advisories
+Policy: https://github.com/Rans-tech/VG-Intelligence-Terminal/security/advisories
 Preferred-Languages: en
-Canonical: https://worldmonitor.app/.well-known/security.txt
+Canonical: https://intel.veritasglobal.co/.well-known/security.txt
 Expires: 2027-03-02T00:00:00.000Z

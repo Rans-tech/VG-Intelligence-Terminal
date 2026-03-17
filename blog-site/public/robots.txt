@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.worldmonitor.app/blog/sitemap-index.xml
+Sitemap: https://intel.veritasglobal.co/blog/sitemap-index.xml

@@ -10,12 +10,12 @@ const RSS_DIRECT_TO_RELAY = import.meta.env.VITE_RSS_DIRECT_TO_RELAY === 'true';
 const RSS_PROXY_BASE = isDev
   ? '' // Dev uses Vite's rssProxyPlugin
   : RSS_DIRECT_TO_RELAY
-    ? 'https://proxy.worldmonitor.app'
+    ? 'https://proxy.intel.veritasglobal.co'
     : '';
 
 // Widget agent always goes directly to Railway relay.
 // Desktop: sidecar buffers via arrayBuffer() which destroys SSE streaming, so we bypass it.
-const WIDGET_RELAY_BASE = 'https://proxy.worldmonitor.app';
+const WIDGET_RELAY_BASE = 'https://proxy.intel.veritasglobal.co';
 export function widgetAgentUrl(): string {
   if (isDev) return '/widget-agent';
   return `${WIDGET_RELAY_BASE}/widget-agent`;

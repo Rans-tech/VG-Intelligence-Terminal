@@ -1,13 +1,13 @@
-# World Monitor Pro — Implementation Roadmap
+# Veritas Intel Pro — Implementation Roadmap
 
 ## Context
 
 The `/pro` landing page promises features across 4 tiers (Free, Pro, API, Enterprise) but almost nothing beyond the marketing page exists. Current state:
 
 - **Convex**: bare — `registrations` + `counters` tables only
-- **Auth**: none — no Clerk, no sessions. Desktop uses manual `WORLDMONITOR_API_KEY` in keychain
+- **Auth**: none — no Clerk, no sessions. Desktop uses manual `VERITAS_API_KEY` in keychain
 - **Payments**: none — no Stripe
-- **Gating**: UI-only on desktop (6 panels, 3 map layers). No server-side enforcement. `api/_api-key.js` validates against static `WORLDMONITOR_VALID_KEYS` env var
+- **Gating**: UI-only on desktop (6 panels, 3 map layers). No server-side enforcement. `api/_api-key.js` validates against static `VERITAS_VALID_KEYS` env var
 - **User dashboard**: none
 - **API tier**: none (marketed as separate product)
 - **Delivery channels**: none (Slack/Telegram/Discord/WhatsApp/Email)
@@ -72,7 +72,7 @@ Phase 0 (Decisions)
 **Priority**: P0 | **Size**: S | **Dependencies**: None
 
 **Description**:
-Evaluate and select an authentication provider for World Monitor Pro.
+Evaluate and select an authentication provider for Veritas Intel Pro.
 
 **Options**:
 
@@ -502,10 +502,10 @@ Create Stripe products and price objects for all tiers.
 
 **Products**:
 
-1. **World Monitor Pro Monthly** — $X/mo
-2. **World Monitor Pro Annual** — $X/yr (discount)
-3. **World Monitor API Starter** — $Y/mo (1,000 req/day, 5 webhook rules)
-4. **World Monitor API Business** — $Z/mo (50,000 req/day, unlimited webhooks + SLA)
+1. **Veritas Intel Pro Monthly** — $X/mo
+2. **Veritas Intel Pro Annual** — $X/yr (discount)
+3. **Veritas Intel API Starter** — $Y/mo (1,000 req/day, 5 webhook rules)
+4. **Veritas Intel API Business** — $Z/mo (50,000 req/day, unlimited webhooks + SLA)
 
 **Environment variables**:
 
@@ -683,7 +683,7 @@ Add entitlement-aware middleware to the server gateway so pro-only endpoints are
 
 **API key migration (dual-read rollout)**:
 
-1. **Phase A**: validate against BOTH static `WORLDMONITOR_VALID_KEYS` AND new entitlements. Log comparison metrics.
+1. **Phase A**: validate against BOTH static `VERITAS_VALID_KEYS` AND new entitlements. Log comparison metrics.
 2. **Phase B**: after 1 week with 0 mismatches, flip flag to new system only. Keep env var as emergency rollback.
 3. **Phase C**: remove static key validation code after 30 days.
 
@@ -719,7 +719,7 @@ Create a client-side service that exposes user plan/entitlements for UI gating.
 1. New service: `src/services/plan-context.ts`
 2. On auth, query user entitlements from Convex
 3. Expose helpers: `isPro()`, `hasApiAccess()`, `getPlan()`, `hasFeature(name)`
-4. Replace ALL `getSecretState('WORLDMONITOR_API_KEY').present` checks with plan context
+4. Replace ALL `getSecretState('VERITAS_API_KEY').present` checks with plan context
 5. Works for both web (Clerk session) and desktop (Clerk + Tauri keychain)
 6. Include `computedAt` timestamp for staleness detection
 
@@ -733,7 +733,7 @@ Create a client-side service that exposes user plan/entitlements for UI gating.
 **Acceptance criteria**:
 
 - [ ] `isPro()` returns true for pro users, false for free
-- [ ] All `getSecretState('WORLDMONITOR_API_KEY')` references replaced
+- [ ] All `getSecretState('VERITAS_API_KEY')` references replaced
 - [ ] Plan context updates within 60s of subscription change
 
 ---
@@ -1137,11 +1137,11 @@ Enhance existing risk analytics with scenario analysis and convergence alerting.
 **Priority**: P1 | **Size**: M | **Dependencies**: #4.1
 
 **Description**:
-Pro users should NOT need to configure individual API keys for Finnhub, FRED, ACLED, etc. A single World Monitor Pro subscription gives access to all 24 services.
+Pro users should NOT need to configure individual API keys for Finnhub, FRED, ACLED, etc. A single Veritas Intel Pro subscription gives access to all 24 services.
 
 **Implementation**:
 
-- Server-side: pro requests use World Monitor's own upstream API keys (already configured as env vars)
+- Server-side: pro requests use Veritas Intel's own upstream API keys (already configured as env vars)
 - Free tier: continues using BYOK via desktop settings panel
 - Gateway identifies pro user → skips BYOK requirement → uses server-side keys for upstream calls
 

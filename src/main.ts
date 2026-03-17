@@ -11,8 +11,8 @@ const sentryDsn = import.meta.env.VITE_SENTRY_DSN?.trim();
 // Initialize Sentry error tracking (early as possible)
 Sentry.init({
   dsn: sentryDsn || undefined,
-  release: `worldmonitor@${__APP_VERSION__}`,
-  environment: location.hostname === 'worldmonitor.app' ? 'production'
+  release: `veritas-intel@${__APP_VERSION__}`,
+  environment: location.hostname === 'intel.veritasglobal.co' ? 'production'
     : location.hostname.includes('vercel.app') ? 'preview'
     : 'development',
   enabled: Boolean(sentryDsn) && !location.hostname.startsWith('localhost') && !('__TAURI_INTERNALS__' in window),
@@ -315,7 +315,7 @@ initMetaTags();
 
 // In desktop mode, route /api/* calls to the local Tauri sidecar backend.
 installRuntimeFetchPatch();
-// In web production, route RPC calls through api.worldmonitor.app (Cloudflare edge).
+// In web production, route RPC calls through api.intel.veritasglobal.co (Cloudflare edge).
 installWebApiRedirect();
 loadDesktopSecrets().catch(() => {});
 
@@ -380,13 +380,13 @@ if (urlParams.get('settings') === '1') {
 // Beta mode toggle: type `beta=true` / `beta=false` in console
 Object.defineProperty(window, 'beta', {
   get() {
-    const on = localStorage.getItem('worldmonitor-beta-mode') === 'true';
+    const on = localStorage.getItem('veritas-beta-mode') === 'true';
     console.log(`[Beta] ${on ? 'ON' : 'OFF'}`);
     return on;
   },
   set(v: boolean) {
-    if (v) localStorage.setItem('worldmonitor-beta-mode', 'true');
-    else localStorage.removeItem('worldmonitor-beta-mode');
+    if (v) localStorage.setItem('veritas-beta-mode', 'true');
+    else localStorage.removeItem('veritas-beta-mode');
     location.reload();
   },
 });

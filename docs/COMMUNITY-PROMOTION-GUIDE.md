@@ -1,14 +1,14 @@
-# World Monitor — Community Promotion Guide
+# Veritas Intel — Community Promotion Guide
 
-Thank you for helping spread the word about World Monitor! This guide provides talking points, must-see features, and visual suggestions to help you create compelling content for your audience.
+Thank you for helping spread the word about Veritas Intel! This guide provides talking points, must-see features, and visual suggestions to help you create compelling content for your audience.
 
 ---
 
-## What is World Monitor?
+## What is Veritas Intel?
 
 **One-line pitch**: A free, open-source, real-time global intelligence dashboard — like Bloomberg Terminal meets OSINT, for everyone.
 
-**Longer description**: World Monitor aggregates 170+ news feeds, military tracking, financial markets, conflict data, protest monitoring, satellite imagery, and AI-powered analysis into a single unified dashboard with an interactive globe. Available as a web app, desktop app (macOS/Windows/Linux), and installable PWA.
+**Longer description**: Veritas Intel aggregates 170+ news feeds, military tracking, financial markets, conflict data, protest monitoring, satellite imagery, and AI-powered analysis into a single unified dashboard with an interactive globe. Available as a web app, desktop app (macOS/Windows/Linux), and installable PWA.
 
 ---
 
@@ -16,10 +16,10 @@ Thank you for helping spread the word about World Monitor! This guide provides t
 
 | Link | Description |
 |------|-------------|
-| [worldmonitor.app](https://worldmonitor.app) | Main dashboard — geopolitics, military, conflicts |
-| [tech.worldmonitor.app](https://tech.worldmonitor.app) | Tech variant — startups, AI/ML, cybersecurity |
-| [finance.worldmonitor.app](https://finance.worldmonitor.app) | Finance variant — markets, exchanges, central banks |
-| [GitHub](https://github.com/koala73/worldmonitor) | Source code (AGPL-3.0) |
+| [intel.veritasglobal.co](https://intel.veritasglobal.co) | Main dashboard — geopolitics, military, conflicts |
+| [tech.intel.veritasglobal.co](https://tech.intel.veritasglobal.co) | Tech variant — startups, AI/ML, cybersecurity |
+| [finance.intel.veritasglobal.co](https://finance.intel.veritasglobal.co) | Finance variant — markets, exchanges, central banks |
+| [GitHub](https://github.com/Rans-tech/VG-Intelligence-Terminal) | Source code (AGPL-3.0) |
 
 ---
 
@@ -168,10 +168,10 @@ Run AI summarization entirely on your own hardware — no API keys, no cloud, no
 
 ## Branding Notes
 
-- **Name**: "World Monitor" (two words, capitalized)
+- **Name**: "Veritas Intel" (two words, capitalized)
 - **Tagline**: "Real-time global intelligence dashboard"
 - **License**: AGPL-3.0 (free and open source)
-- **Creator**: Credit "World Monitor by Elie Habib" or link to the GitHub repo
+- **Creator**: Credit "Veritas Intel by Elie Habib" or link to the GitHub repo
 - **Variants**: You can mention all three (World/Tech/Finance) or focus on the main one
 - **No login required**: Anyone can use the web app immediately — no signup, no paywall
 
@@ -179,6 +179,6 @@ Run AI summarization entirely on your own hardware — no API keys, no cloud, no
 
 ## Thank You
 
-We genuinely appreciate community members helping grow World Monitor's reach. Feel free to interpret these guidelines creatively — there's no strict template. The most compelling content comes from showing what YOU find most interesting or useful about the tool.
+We genuinely appreciate community members helping grow Veritas Intel's reach. Feel free to interpret these guidelines creatively — there's no strict template. The most compelling content comes from showing what YOU find most interesting or useful about the tool.
 
 If you have questions or want specific screenshots/assets, open a Discussion on the GitHub repo or reach out directly.

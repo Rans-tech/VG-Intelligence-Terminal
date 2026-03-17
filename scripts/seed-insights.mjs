@@ -86,7 +86,7 @@ const LLM_PROVIDERS = [
     envKey: 'OPENROUTER_API_KEY',
     apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
     model: 'google/gemini-2.5-flash',
-    headers: (key) => ({ 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json', 'HTTP-Referer': 'https://worldmonitor.app', 'X-Title': 'World Monitor', 'User-Agent': CHROME_UA }),
+    headers: (key) => ({ 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json', 'HTTP-Referer': 'https://intel.veritasglobal.co', 'X-Title': 'Veritas Intel', 'User-Agent': CHROME_UA }),
     timeout: 20_000,
   },
 ];
@@ -187,7 +187,7 @@ function categorizeStory(title) {
 }
 
 async function warmDigestCache() {
-  const apiBase = process.env.API_BASE_URL || 'https://api.worldmonitor.app';
+  const apiBase = process.env.API_BASE_URL || 'https://api.intel.veritasglobal.co';
   try {
     const resp = await fetch(`${apiBase}/api/news/v1/list-feed-digest?variant=full&lang=en`, {
       headers: { 'User-Agent': CHROME_UA },

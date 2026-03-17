@@ -1009,8 +1009,8 @@ export const MONITOR_COLORS = [
 ];
 
 export const STORAGE_KEYS = {
-  panels: 'worldmonitor-panels',
-  monitors: 'worldmonitor-monitors',
-  mapLayers: 'worldmonitor-layers',
-  disabledFeeds: 'worldmonitor-disabled-feeds',
+  panels: 'veritas-panels',
+  monitors: 'veritas-monitors',
+  mapLayers: 'veritas-layers',
+  disabledFeeds: 'veritas-disabled-feeds',
 } as const;

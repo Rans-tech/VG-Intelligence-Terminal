@@ -35,14 +35,14 @@ export const MONITOR_COLORS = [
 
 // Storage keys - shared
 export const STORAGE_KEYS = {
-  panels: 'worldmonitor-panels',
-  monitors: 'worldmonitor-monitors',
-  mapLayers: 'worldmonitor-layers',
-  disabledFeeds: 'worldmonitor-disabled-feeds',
-  liveChannels: 'worldmonitor-live-channels',
-  mapMode: 'worldmonitor-map-mode',          // 'flat' | 'globe'
-  activeChannel: 'worldmonitor-active-channel',
-  webcamPrefs: 'worldmonitor-webcam-prefs',
+  panels: 'veritas-panels',
+  monitors: 'veritas-monitors',
+  mapLayers: 'veritas-layers',
+  disabledFeeds: 'veritas-disabled-feeds',
+  liveChannels: 'veritas-live-channels',
+  mapMode: 'veritas-map-mode',          // 'flat' | 'globe'
+  activeChannel: 'veritas-active-channel',
+  webcamPrefs: 'veritas-webcam-prefs',
 } as const;
 
 // Type definitions for variant configs

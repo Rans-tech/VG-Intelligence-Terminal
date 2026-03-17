@@ -1,7 +1,7 @@
 /**
  * GlobeMap - 3D interactive globe using globe.gl
  *
- * Matches World Monitor's MapContainer API so it can be used as a drop-in
+ * Matches the MapContainer API so it can be used as a drop-in
  * replacement within MapContainer when the user enables globe mode.
  *
  * Architecture mirrors Sentinel (sentinel.axonia.us):
@@ -1748,7 +1748,7 @@ export class GlobeMap {
 
   private createLayerToggles(): void {
     const layerDefs = getLayersForVariant((SITE_VARIANT || 'full') as MapVariant, 'globe');
-    const _wmKey = getSecretState('WORLDMONITOR_API_KEY').present;
+    const _wmKey = getSecretState('VERITAS_API_KEY').present;
     const layers = layerDefs.map(def => ({
       key: def.key,
       label: resolveLayerLabel(def, t),
@@ -1780,7 +1780,7 @@ export class GlobeMap {
       </div>`;
     const authorBadge = document.createElement('div');
     authorBadge.className = 'map-author-badge';
-    authorBadge.textContent = '© Elie Habib · Someone™';
+    authorBadge.textContent = '© Veritas Global, LLC';
     el.appendChild(authorBadge);
     this.container.appendChild(el);
 

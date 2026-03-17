@@ -2610,7 +2610,7 @@ const CLASSIFY_LLM_PROVIDERS = [
     envKey: 'OPENROUTER_API_KEY',
     apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
     model: 'google/gemini-2.5-flash',
-    headers: (key) => ({ Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', 'HTTP-Referer': 'https://worldmonitor.app', 'X-Title': 'World Monitor', 'User-Agent': CHROME_UA }),
+    headers: (key) => ({ Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', 'HTTP-Referer': 'https://intel.veritasglobal.co', 'X-Title': 'Veritas Intel', 'User-Agent': CHROME_UA }),
     timeout: 30000,
   },
 ];
@@ -2681,7 +2681,7 @@ async function classifyFetchLlm(titles) {
 let classifyInFlight = false;
 
 async function seedClassifyForVariant(variant) {
-  const digestUrl = `https://api.worldmonitor.app/api/news/v1/list-feed-digest?variant=${variant}&lang=en`;
+  const digestUrl = `https://api.intel.veritasglobal.co/api/news/v1/list-feed-digest?variant=${variant}&lang=en`;
   let digest;
   try {
     const resp = await new Promise((resolve, reject) => {
@@ -2815,7 +2815,7 @@ async function startClassifySeedLoop() {
 // so service statuses are always cached (TTL is 30 min).
 // ─────────────────────────────────────────────────────────────
 const SERVICE_STATUSES_SEED_INTERVAL_MS = 15 * 60 * 1000; // 15 min (TTL/2)
-const SERVICE_STATUSES_RPC_URL = 'https://api.worldmonitor.app/api/infrastructure/v1/list-service-statuses';
+const SERVICE_STATUSES_RPC_URL = 'https://api.intel.veritasglobal.co/api/infrastructure/v1/list-service-statuses';
 
 async function seedServiceStatuses() {
   try {
@@ -2824,7 +2824,7 @@ async function seedServiceStatuses() {
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': CHROME_UA,
-        Origin: 'https://worldmonitor.app',
+        Origin: 'https://intel.veritasglobal.co',
       },
       body: '{}',
       signal: AbortSignal.timeout(60_000),
@@ -3095,14 +3095,14 @@ function startTheaterPostureSeedLoop() {
 // The RPC handler itself refreshes the stale key on every call.
 // ─────────────────────────────────────────────────────────────
 const CII_WARM_PING_INTERVAL_MS = 8 * 60 * 1000; // 8 min (live cache TTL is 10 min)
-const CII_RPC_URL = 'https://api.worldmonitor.app/api/intelligence/v1/get-risk-scores';
+const CII_RPC_URL = 'https://api.intel.veritasglobal.co/api/intelligence/v1/get-risk-scores';
 
 async function seedCiiWarmPing() {
   try {
     const resp = await fetch(CII_RPC_URL, {
       headers: {
         'User-Agent': CHROME_UA,
-        Origin: 'https://worldmonitor.app',
+        Origin: 'https://intel.veritasglobal.co',
       },
       signal: AbortSignal.timeout(60_000),
     });
@@ -6026,7 +6026,7 @@ function handleWorldBankRequest(req, res) {
   const request = https.get(wbUrl, {
     headers: {
       'Accept': 'application/json',
-      'User-Agent': 'Mozilla/5.0 (compatible; WorldMonitor/1.0; +https://worldmonitor.app)',
+      'User-Agent': 'Mozilla/5.0 (compatible; VeritasIntel/1.0; +https://intel.veritasglobal.co)',
     },
     timeout: 15000,
   }, (response) => {
@@ -6795,9 +6795,9 @@ function handleNotamProxyRequest(req, res) {
 
 // CORS origin allowlist — only our domains can use this relay
 const ALLOWED_ORIGINS = [
-  'https://worldmonitor.app',
-  'https://tech.worldmonitor.app',
-  'https://finance.worldmonitor.app',
+  'https://intel.veritasglobal.co',
+  'https://tech.intel.veritasglobal.co',
+  'https://finance.intel.veritasglobal.co',
   'http://localhost:5173',   // Vite dev
   'http://localhost:5174',   // Vite dev alt port
   'http://localhost:4173',   // Vite preview
@@ -6808,10 +6808,10 @@ const ALLOWED_ORIGINS = [
 function getCorsOrigin(req) {
   const origin = req.headers.origin || '';
   if (ALLOWED_ORIGINS.includes(origin)) return origin;
-  // Wildcard: any *.worldmonitor.app subdomain (for variant subdomains)
+  // Wildcard: any *.veritasglobal.co subdomain (for variant subdomains)
   try {
     const url = new URL(origin);
-    if (url.hostname.endsWith('.worldmonitor.app') && url.protocol === 'https:') return origin;
+    if (url.hostname.endsWith('.veritasglobal.co') && url.protocol === 'https:') return origin;
   } catch { /* invalid origin — fall through */ }
   // Optional: allow Vercel preview deployments when explicitly enabled.
   if (ALLOW_VERCEL_PREVIEW_ORIGINS && origin.endsWith('.vercel.app')) return origin;
@@ -7386,7 +7386,7 @@ const WIDGET_ALLOWED_ENDPOINTS = new Set([
 ]);
 
 const WIDGET_FETCH_TOOL = {
-  name: 'fetch_worldmonitor_data',
+  name: 'fetch_veritas_data',
   description: 'Fetch live data from WorldMonitor APIs. Only pre-approved endpoint paths are allowed.',
   input_schema: {
     type: 'object',
@@ -7400,7 +7400,7 @@ const WIDGET_FETCH_TOOL = {
 
 const WIDGET_SYSTEM_PROMPT = `You are a WorldMonitor widget builder. Your job is to fetch live data and generate a display-only HTML widget using the WorldMonitor design system.
 
-## Available data (use fetch_worldmonitor_data tool)
+## Available data (use fetch_veritas_data tool)
 - /rpc/worldmonitor.markets.v1.MarketsService/GetQuotes — market quotes (stocks, indices)
 - /rpc/worldmonitor.markets.v1.MarketsService/GetCommodities — commodity prices
 - /rpc/worldmonitor.markets.v1.MarketsService/GetCryptoQuotes — crypto prices
@@ -7619,7 +7619,7 @@ async function handleWidgetAgentRequest(req, res) {
       if (response.stop_reason === 'tool_use') {
         const toolResults = [];
         for (const block of response.content) {
-          if (block.type !== 'tool_use' || block.name !== 'fetch_worldmonitor_data') continue;
+          if (block.type !== 'tool_use' || block.name !== 'fetch_veritas_data') continue;
           const { endpoint, params = {} } = block.input;
           sendWidgetSSE(res, 'tool_call', { endpoint });
 
@@ -7629,7 +7629,7 @@ async function handleWidgetAgentRequest(req, res) {
           }
 
           try {
-            const url = new URL(endpoint, 'https://api.worldmonitor.app');
+            const url = new URL(endpoint, 'https://api.intel.veritasglobal.co');
             for (const [k, v] of Object.entries(params)) {
               url.searchParams.set(k, String(v));
             }

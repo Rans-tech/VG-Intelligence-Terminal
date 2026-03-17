@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug in World Monitor
+description: Report a bug in Veritas Intel
 labels: ["bug"]
 body:
   - type: markdown
@@ -13,9 +13,9 @@ body:
       label: Variant
       description: Which variant are you using?
       options:
-        - worldmonitor.app (Full / Geopolitical)
-        - tech.worldmonitor.app (Tech / Startup)
-        - finance.worldmonitor.app (Finance)
+        - intel.veritasglobal.co (Full / Geopolitical)
+        - tech.intel.veritasglobal.co (Tech / Startup)
+        - finance.intel.veritasglobal.co (Finance)
         - Desktop app (Windows)
         - Desktop app (macOS)
         - Desktop app (Linux)
