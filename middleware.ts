@@ -18,25 +18,11 @@ const VERITAS_OG = {
   url: 'https://intel.veritasglobal.co/',
 };
 
-const ALLOWED_HOSTS = new Set([
-  'intel.veritasglobal.co',
-  'veritasglobal.co',
-]);
-const VERCEL_PREVIEW_RE = /^[a-z0-9-]+-[a-z0-9]{8,}\.vercel\.app$/;
-
-function normalizeHost(raw: string): string {
-  return raw.toLowerCase().replace(/:\d+$/, '');
-}
-
-function isAllowedHost(host: string): boolean {
-  return ALLOWED_HOSTS.has(host) || VERCEL_PREVIEW_RE.test(host);
-}
 
 export default function middleware(request: Request) {
   const url = new URL(request.url);
   const ua = request.headers.get('user-agent') ?? '';
   const path = url.pathname;
-  const host = normalizeHost(request.headers.get('host') ?? url.hostname);
 
   // Social bot OG response for root page
   if (path === '/' && SOCIAL_PREVIEW_UA.test(ua)) {
