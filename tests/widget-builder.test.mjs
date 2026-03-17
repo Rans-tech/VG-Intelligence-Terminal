@@ -251,17 +251,17 @@ describe('widget-store — constants and logic', () => {
     );
   });
 
-  it('deleteWidget cleans worldmonitor-panel-spans (aggregate map)', () => {
+  it('deleteWidget cleans veritas-panel-spans (aggregate map)', () => {
     assert.ok(
-      store.includes("'worldmonitor-panel-spans'"),
-      "deleteWidget must clean 'worldmonitor-panel-spans'",
+      store.includes("'veritas-panel-spans'"),
+      "deleteWidget must clean 'veritas-panel-spans'",
     );
   });
 
-  it('deleteWidget cleans worldmonitor-panel-col-spans (aggregate map)', () => {
+  it('deleteWidget cleans veritas-panel-col-spans (aggregate map)', () => {
     assert.ok(
-      store.includes("'worldmonitor-panel-col-spans'"),
-      "deleteWidget must clean 'worldmonitor-panel-col-spans'",
+      store.includes("'veritas-panel-col-spans'"),
+      "deleteWidget must clean 'veritas-panel-col-spans'",
     );
   });
 
