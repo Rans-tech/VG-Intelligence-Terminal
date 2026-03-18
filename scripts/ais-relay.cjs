@@ -2936,33 +2936,107 @@ const THEATER_QUERY_REGIONS = [
 async function fetchTheaterFlightsFromOpenSky() {
   const seenIds = new Set();
   const allFlights = [];
+
+  // Try authenticated via local proxy first
+  let proxyWorked = false;
   for (const region of THEATER_QUERY_REGIONS) {
     const params = `lamin=${region.lamin}&lamax=${region.lamax}&lomin=${region.lomin}&lomax=${region.lomax}`;
-    const resp = await fetch(`http://localhost:${PORT}/opensky?${params}`, {
-      headers: { 'User-Agent': CHROME_UA, ...(RELAY_SHARED_SECRET ? { 'x-relay-key': RELAY_SHARED_SECRET } : {}) },
-      signal: AbortSignal.timeout(20_000),
-    });
-    if (!resp.ok) throw new Error(`OpenSky proxy ${resp.status} for ${region.name}`);
-    const data = await resp.json();
-    if (!data.states) continue;
-    for (const state of data.states) {
-      const [icao24, callsign, , , , lon, lat, altitude, onGround, velocity, heading] = state;
-      if (lat == null || lon == null || onGround) continue;
-      if (!theaterIsMilCallsign(callsign)) continue;
-      if (seenIds.has(icao24)) continue;
-      seenIds.add(icao24);
-      allFlights.push({
-        id: icao24,
-        callsign: (callsign || '').trim(),
-        lat, lon,
-        altitude: altitude || 0,
-        heading: heading || 0,
-        speed: velocity || 0,
-        aircraftType: theaterDetectAircraftType(callsign),
+    try {
+      const resp = await fetch(`http://localhost:${PORT}/opensky?${params}`, {
+        headers: { 'User-Agent': CHROME_UA, ...(RELAY_SHARED_SECRET ? { 'x-relay-key': RELAY_SHARED_SECRET } : {}) },
+        signal: AbortSignal.timeout(20_000),
       });
+      if (!resp.ok) {
+        console.warn(`[TheaterPosture] OpenSky proxy ${resp.status} for ${region.name} — will try anonymous`);
+        continue;
+      }
+      const data = await resp.json();
+      if (!data.states || data.states.length === 0) continue;
+      proxyWorked = true;
+      for (const state of data.states) {
+        const [icao24, callsign, , , , lon, lat, altitude, onGround, velocity, heading] = state;
+        if (lat == null || lon == null || onGround) continue;
+        if (!theaterIsMilCallsign(callsign)) continue;
+        if (seenIds.has(icao24)) continue;
+        seenIds.add(icao24);
+        allFlights.push({
+          id: icao24, callsign: (callsign || '').trim(), lat, lon,
+          altitude: altitude || 0, heading: heading || 0, speed: velocity || 0,
+          aircraftType: theaterDetectAircraftType(callsign),
+        });
+      }
+    } catch (e) {
+      console.warn(`[TheaterPosture] OpenSky proxy error for ${region.name}: ${e?.message || e}`);
     }
   }
+
+  // If authenticated proxy failed, try anonymous direct fetch
+  if (allFlights.length === 0 && !proxyWorked) {
+    console.log('[TheaterPosture] Authenticated OpenSky failed — trying anonymous fallback...');
+    for (const region of THEATER_QUERY_REGIONS) {
+      const params = `lamin=${region.lamin}&lamax=${region.lamax}&lomin=${region.lomin}&lomax=${region.lomax}`;
+      try {
+        const resp = await fetch(`https://opensky-network.org/api/states/all?${params}`, {
+          headers: { 'User-Agent': CHROME_UA },
+          signal: AbortSignal.timeout(20_000),
+        });
+        if (!resp.ok) {
+          console.warn(`[TheaterPosture] OpenSky anonymous ${resp.status} for ${region.name}`);
+          continue;
+        }
+        const data = await resp.json();
+        if (!data.states || data.states.length === 0) continue;
+        console.log(`[TheaterPosture] OpenSky anonymous ${region.name}: ${data.states.length} states`);
+        for (const state of data.states) {
+          const [icao24, callsign, , , , lon, lat, altitude, onGround, velocity, heading] = state;
+          if (lat == null || lon == null || onGround) continue;
+          if (!theaterIsMilCallsign(callsign)) continue;
+          if (seenIds.has(icao24)) continue;
+          seenIds.add(icao24);
+          allFlights.push({
+            id: icao24, callsign: (callsign || '').trim(), lat, lon,
+            altitude: altitude || 0, heading: heading || 0, speed: velocity || 0,
+            aircraftType: theaterDetectAircraftType(callsign),
+          });
+        }
+      } catch (e) {
+        console.warn(`[TheaterPosture] OpenSky anonymous error for ${region.name}: ${e?.message || e}`);
+      }
+    }
+  }
+
   return allFlights;
+}
+
+// Split large theater bounds into sub-boxes capped at maxNm (Wingbits Starter: 150 NM)
+function splitTheaterIntoSubBoxes(theaters, maxNm = 140) {
+  const areas = [];
+  for (const t of theaters) {
+    const widthNm = Math.abs(t.bounds.east - t.bounds.west) * 60;
+    const heightNm = Math.abs(t.bounds.north - t.bounds.south) * 60;
+    const cols = Math.ceil(widthNm / maxNm);
+    const rows = Math.ceil(heightNm / maxNm);
+    const lonStep = (t.bounds.east - t.bounds.west) / cols;
+    const latStep = (t.bounds.north - t.bounds.south) / rows;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const south = t.bounds.south + r * latStep;
+        const north = south + latStep;
+        const west = t.bounds.west + c * lonStep;
+        const east = west + lonStep;
+        areas.push({
+          alias: `${t.id}_${r}_${c}`,
+          by: 'box',
+          la: (north + south) / 2,
+          lo: (east + west) / 2,
+          w: Math.abs(east - west) * 60,
+          h: Math.abs(north - south) * 60,
+          unit: 'nm',
+        });
+      }
+    }
+  }
+  return areas;
 }
 
 async function fetchTheaterFlightsFromWingbits() {
@@ -2971,51 +3045,53 @@ async function fetchTheaterFlightsFromWingbits() {
     console.warn('[Wingbits] WINGBITS_API_KEY not set — skipped');
     return null;
   }
-  const areas = POSTURE_THEATERS.map((t) => ({
-    alias: t.id,
-    by: 'box',
-    la: (t.bounds.north + t.bounds.south) / 2,
-    lo: (t.bounds.east + t.bounds.west) / 2,
-    w: Math.abs(t.bounds.east - t.bounds.west) * 60,
-    h: Math.abs(t.bounds.north - t.bounds.south) * 60,
-    unit: 'nm',
-  }));
+  const allAreas = splitTheaterIntoSubBoxes(POSTURE_THEATERS);
+  // Wingbits may limit batch size — send in chunks of 10
+  const CHUNK_SIZE = 10;
+  const flights = [];
+  const seenIds = new Set();
+  let totalAreas = 0;
   try {
-    const resp = await fetch('https://customer-api.wingbits.com/v1/flights', {
-      method: 'POST',
-      headers: { 'x-api-key': apiKey, Accept: 'application/json', 'Content-Type': 'application/json', 'User-Agent': CHROME_UA },
-      body: JSON.stringify(areas),
-      signal: AbortSignal.timeout(15_000),
-    });
-    if (!resp.ok) {
-      console.warn(`[Wingbits] API error: ${resp.status} ${resp.statusText}`);
-      return null;
-    }
-    const data = await resp.json();
-    const flights = [];
-    const seenIds = new Set();
-    for (const areaResult of data) {
-      const flightList = Array.isArray(areaResult.data) ? areaResult.data
-        : Array.isArray(areaResult.flights) ? areaResult.flights
-        : Array.isArray(areaResult) ? areaResult : [];
-      for (const f of flightList) {
-        const icao24 = f.h || f.icao24 || f.id;
-        if (!icao24 || seenIds.has(icao24)) continue;
-        seenIds.add(icao24);
-        const callsign = (f.f || f.callsign || f.flight || '').trim();
-        if (!theaterIsMilCallsign(callsign)) continue;
-        flights.push({
-          id: icao24, callsign,
-          lat: f.la || f.latitude || f.lat,
-          lon: f.lo || f.longitude || f.lon || f.lng,
-          altitude: f.ab || f.altitude || f.alt || 0,
-          heading: f.th || f.heading || f.track || 0,
-          speed: f.gs || f.groundSpeed || f.speed || f.velocity || 0,
-          aircraftType: theaterDetectAircraftType(callsign),
-        });
+    for (let i = 0; i < allAreas.length; i += CHUNK_SIZE) {
+      const chunk = allAreas.slice(i, i + CHUNK_SIZE);
+      const resp = await fetch('https://customer-api.wingbits.com/v1/flights', {
+        method: 'POST',
+        headers: { 'x-api-key': apiKey, Accept: 'application/json', 'Content-Type': 'application/json', 'User-Agent': CHROME_UA },
+        body: JSON.stringify(chunk),
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (!resp.ok) {
+        const body = await resp.text().catch(() => '');
+        console.warn(`[Wingbits] API error: ${resp.status} ${resp.statusText} (chunk ${i / CHUNK_SIZE + 1}) ${body.slice(0, 200)}`);
+        continue;
       }
+      const data = await resp.json();
+      totalAreas += (Array.isArray(data) ? data.length : 0);
+      for (const areaResult of (Array.isArray(data) ? data : [])) {
+        const flightList = Array.isArray(areaResult.data) ? areaResult.data
+          : Array.isArray(areaResult.flights) ? areaResult.flights
+          : Array.isArray(areaResult) ? areaResult : [];
+        for (const f of flightList) {
+          const icao24 = f.h || f.icao24 || f.id;
+          if (!icao24 || seenIds.has(icao24)) continue;
+          seenIds.add(icao24);
+          const callsign = (f.f || f.callsign || f.flight || '').trim();
+          if (!theaterIsMilCallsign(callsign)) continue;
+          flights.push({
+            id: icao24, callsign,
+            lat: f.la || f.latitude || f.lat,
+            lon: f.lo || f.longitude || f.lon || f.lng,
+            altitude: f.ab || f.altitude || f.alt || 0,
+            heading: f.th || f.heading || f.track || 0,
+            speed: f.gs || f.groundSpeed || f.speed || f.velocity || 0,
+            aircraftType: theaterDetectAircraftType(callsign),
+          });
+        }
+      }
+      // Rate-limit courtesy between chunks
+      if (i + CHUNK_SIZE < allAreas.length) await new Promise(r => setTimeout(r, 500));
     }
-    console.log(`[Wingbits] Fetched ${flights.length} military flights from ${data.length} areas`);
+    console.log(`[Wingbits] Fetched ${flights.length} military flights from ${totalAreas} sub-areas (${allAreas.length} boxes queried)`);
     return flights;
   } catch (err) {
     console.warn(`[Wingbits] Fetch failed: ${err?.message || err}`);
