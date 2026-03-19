@@ -21,7 +21,7 @@ import { loadEnvFile, CHROME_UA } from './_seed-utils.mjs';
 
 loadEnvFile(import.meta.url);
 
-const API_BASE = 'https://api.intel.veritasglobal.co';
+const API_BASE = 'https://intel.veritasglobal.co';
 const TIMEOUT = 30_000;
 
 async function warmPing(name, path) {

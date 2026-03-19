@@ -315,7 +315,7 @@ initMetaTags();
 
 // In desktop mode, route /api/* calls to the local Tauri sidecar backend.
 installRuntimeFetchPatch();
-// In web production, route RPC calls through api.intel.veritasglobal.co (Cloudflare edge).
+// In web production, route RPC calls through configured API base (if set via VITE_WS_API_URL).
 installWebApiRedirect();
 loadDesktopSecrets().catch(() => {});
 

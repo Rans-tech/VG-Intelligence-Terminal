@@ -7,12 +7,12 @@
  *   node scripts/validate-seed-migration.mjs [--base-url URL]
  *
  * Requires: Referer header from trusted origin OR X-Veritas-Key header.
- * Uses api.intel.veritasglobal.co by default.
+ * Uses intel.veritasglobal.co by default.
  */
 
 const BASE_URL = process.argv.includes('--base-url')
   ? process.argv[process.argv.indexOf('--base-url') + 1]
-  : 'https://api.intel.veritasglobal.co';
+  : 'https://intel.veritasglobal.co';
 
 const ORIGIN = 'https://intel.veritasglobal.co';
 

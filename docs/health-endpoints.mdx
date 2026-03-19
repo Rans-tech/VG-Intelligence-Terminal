@@ -99,13 +99,13 @@ Selected thresholds from `SEED_META`:
 
 ```bash
 # Full health check
-curl -s https://api.intel.veritasglobal.co/api/health | jq .
+curl -s https://intel.veritasglobal.co/api/health | jq .
 
 # Compact (problems only)
-curl -s "https://api.intel.veritasglobal.co/api/health?compact=1" | jq .
+curl -s "https://intel.veritasglobal.co/api/health?compact=1" | jq .
 
 # UptimeRobot / monitoring: check HTTP status code
-curl -o /dev/null -s -w "%{http_code}" https://api.intel.veritasglobal.co/api/health
+curl -o /dev/null -s -w "%{http_code}" https://intel.veritasglobal.co/api/health
 # Returns 200 (healthy/warning) or 503 (degraded/unhealthy)
 ```
 
@@ -171,7 +171,7 @@ A seed is considered stale when its age exceeds **2x the configured interval**. 
 ### Example Request
 
 ```bash
-curl -s https://api.intel.veritasglobal.co/api/seed-health \
+curl -s https://intel.veritasglobal.co/api/seed-health \
   -H "Origin: https://intel.veritasglobal.co" | jq .
 ```
 
@@ -192,7 +192,7 @@ Parse the JSON response to build granular alerts:
 
 ```bash
 # Alert on any critical keys
-STATUS=$(curl -s "https://api.intel.veritasglobal.co/api/health?compact=1")
+STATUS=$(curl -s "https://intel.veritasglobal.co/api/health?compact=1")
 CRIT=$(echo "$STATUS" | jq '.summary.crit')
 if [ "$CRIT" -gt 0 ]; then
   echo "CRITICAL: $CRIT data keys empty"

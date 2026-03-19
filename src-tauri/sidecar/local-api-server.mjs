@@ -520,7 +520,7 @@ async function importHandler(modulePath) {
 
 function resolveConfig(options = {}) {
   const port = Number(options.port ?? process.env.LOCAL_API_PORT ?? 46123);
-  const remoteBase = String(options.remoteBase ?? process.env.LOCAL_API_REMOTE_BASE ?? 'https://api.intel.veritasglobal.co').replace(/\/$/, '');
+  const remoteBase = String(options.remoteBase ?? process.env.LOCAL_API_REMOTE_BASE ?? 'https://intel.veritasglobal.co').replace(/\/$/, '');
   const resourceDir = String(options.resourceDir ?? process.env.LOCAL_API_RESOURCE_DIR ?? process.cwd());
   const apiDir = options.apiDir
     ? String(options.apiDir)
@@ -533,7 +533,7 @@ function resolveConfig(options = {}) {
   const requestedFallback = String(options.cloudFallback ?? process.env.LOCAL_API_CLOUD_FALLBACK ?? '') === 'true';
   const cloudFallback = mode === 'docker' ? false : requestedFallback;
   if (mode === 'docker' && requestedFallback) {
-    (options.logger ?? console).warn('[local-api] Cloud fallback disabled in Docker mode (self-hosted instances must not proxy to api.intel.veritasglobal.co)');
+    (options.logger ?? console).warn('[local-api] Cloud fallback disabled in Docker mode (self-hosted instances must not proxy to intel.veritasglobal.co)');
   }
   const logger = options.logger ?? console;
 

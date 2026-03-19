@@ -2681,7 +2681,7 @@ async function classifyFetchLlm(titles) {
 let classifyInFlight = false;
 
 async function seedClassifyForVariant(variant) {
-  const digestUrl = `https://api.intel.veritasglobal.co/api/news/v1/list-feed-digest?variant=${variant}&lang=en`;
+  const digestUrl = `https://intel.veritasglobal.co/api/news/v1/list-feed-digest?variant=${variant}&lang=en`;
   let digest;
   try {
     const resp = await new Promise((resolve, reject) => {
@@ -2815,7 +2815,7 @@ async function startClassifySeedLoop() {
 // so service statuses are always cached (TTL is 30 min).
 // ─────────────────────────────────────────────────────────────
 const SERVICE_STATUSES_SEED_INTERVAL_MS = 15 * 60 * 1000; // 15 min (TTL/2)
-const SERVICE_STATUSES_RPC_URL = 'https://api.intel.veritasglobal.co/api/infrastructure/v1/list-service-statuses';
+const SERVICE_STATUSES_RPC_URL = 'https://intel.veritasglobal.co/api/infrastructure/v1/list-service-statuses';
 
 async function seedServiceStatuses() {
   try {
@@ -3171,7 +3171,7 @@ function startTheaterPostureSeedLoop() {
 // The RPC handler itself refreshes the stale key on every call.
 // ─────────────────────────────────────────────────────────────
 const CII_WARM_PING_INTERVAL_MS = 8 * 60 * 1000; // 8 min (live cache TTL is 10 min)
-const CII_RPC_URL = 'https://api.intel.veritasglobal.co/api/intelligence/v1/get-risk-scores';
+const CII_RPC_URL = 'https://intel.veritasglobal.co/api/intelligence/v1/get-risk-scores';
 
 async function seedCiiWarmPing() {
   try {
@@ -7705,7 +7705,7 @@ async function handleWidgetAgentRequest(req, res) {
           }
 
           try {
-            const url = new URL(endpoint, 'https://api.intel.veritasglobal.co');
+            const url = new URL(endpoint, 'https://intel.veritasglobal.co');
             for (const [k, v] of Object.entries(params)) {
               url.searchParams.set(k, String(v));
             }

@@ -102,11 +102,11 @@ describe('widget-agent relay — security', () => {
   it('SSRF guard — allowlist is checked before any fetch call in tool loop', () => {
     const allowlistCheck = relay.indexOf('WIDGET_ALLOWED_ENDPOINTS.has(endpoint)');
     assert.ok(allowlistCheck !== -1, 'WIDGET_ALLOWED_ENDPOINTS.has() check missing');
-    // The fetch call to api.intel.veritasglobal.co must come AFTER the check
-    const fetchCallIdx = relay.indexOf("'https://api.intel.veritasglobal.co'", allowlistCheck);
+    // The fetch call to intel.veritasglobal.co must come AFTER the check
+    const fetchCallIdx = relay.indexOf("'https://intel.veritasglobal.co'", allowlistCheck);
     assert.ok(
       fetchCallIdx > allowlistCheck,
-      'fetch() to api.intel.veritasglobal.co must appear after allowlist check',
+      'fetch() to intel.veritasglobal.co must appear after allowlist check',
     );
   });
 

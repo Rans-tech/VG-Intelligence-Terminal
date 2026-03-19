@@ -12,7 +12,7 @@ import { loadEnvFile, CHROME_UA, getRedisCredentials, logSeedResult, extendExist
 
 loadEnvFile(import.meta.url);
 
-const RPC_URL = 'https://api.intel.veritasglobal.co/api/infrastructure/v1/list-service-statuses';
+const RPC_URL = 'https://intel.veritasglobal.co/api/infrastructure/v1/list-service-statuses';
 const CANONICAL_KEY = 'infra:service-statuses:v1';
 
 async function warmPing() {

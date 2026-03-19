@@ -17,7 +17,7 @@ COPY . .
 # Build-time configuration. Pass via --build-arg. Other VITE_* vars (e.g. VITE_PMTILES_URL)
 # can be added here or via --build-arg for custom builds; see .env.example for the full list.
 ARG VITE_VARIANT=full
-ARG VITE_WS_API_URL=https://api.intel.veritasglobal.co
+ARG VITE_WS_API_URL=https://intel.veritasglobal.co
 
 ENV VITE_VARIANT=${VITE_VARIANT}
 ENV VITE_WS_API_URL=${VITE_WS_API_URL}
@@ -31,7 +31,7 @@ FROM nginx:alpine AS runtime
 
 WORKDIR /usr/share/nginx/html
 
-ENV API_UPSTREAM=https://api.intel.veritasglobal.co
+ENV API_UPSTREAM=https://intel.veritasglobal.co
 
 # Copy built assets, nginx template (API_UPSTREAM substituted at startup), and entrypoint.
 COPY --from=builder /app/dist/ ./

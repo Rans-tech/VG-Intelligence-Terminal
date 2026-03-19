@@ -15,7 +15,7 @@ import { t } from './i18n';
 import dashboardFallback from './assets/worldmonitor-7-mar-2026.jpg';
 import wiredLogo from './assets/wired-logo.svg';
 
-const API_BASE = 'https://api.intel.veritasglobal.co/api';
+const API_BASE = 'https://intel.veritasglobal.co/api';
 const TURNSTILE_SITE_KEY = '0x4AAAAAACnaYgHIyxclu8Tj';
 const PRO_URL = 'https://intel.veritasglobal.co/pro';
 
@@ -649,12 +649,12 @@ const ApiSection = () => (
         <div className="bg-black border border-wm-border rounded-lg overflow-hidden font-mono text-sm">
           <div className="bg-wm-card px-4 py-2 border-b border-wm-border flex items-center gap-2">
             <Terminal className="w-4 h-4 text-wm-muted" aria-hidden="true" />
-            <span className="text-wm-muted text-xs">api.intel.veritasglobal.co</span>
+            <span className="text-wm-muted text-xs">intel.veritasglobal.co</span>
           </div>
           <div className="p-6 text-gray-300 overflow-x-auto">
             <pre><code>
 <span className="text-wm-blue">curl</span> \<br/>
-  <span className="text-wm-green">"https://api.intel.veritasglobal.co/v1/intelligence/convergence?region=MENA&time_window=6h"</span> \<br/>
+  <span className="text-wm-green">"https://intel.veritasglobal.co/v1/intelligence/convergence?region=MENA&time_window=6h"</span> \<br/>
   -H <span className="text-wm-green">"Authorization: Bearer wm_live_xxx"</span><br/><br/>
 <span className="text-wm-muted">{"{"}</span><br/>
   <span className="text-wm-blue">"status"</span>: <span className="text-wm-green">"success"</span>,<br/>

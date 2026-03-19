@@ -9,7 +9,7 @@ const ENV = (() => {
 })();
 
 const WS_API_URL = ENV.VITE_WS_API_URL || '';
-const DEFAULT_WEB_API_URL = 'https://api.intel.veritasglobal.co';
+const DEFAULT_WEB_API_URL = 'https://intel.veritasglobal.co';
 const KEYED_CLOUD_API_PATTERN = /^\/api\/(?:[^/]+\/v1\/|bootstrap(?:\?|$)|polymarket(?:\?|$)|ais-snapshot(?:\?|$))/;
 
 const DEFAULT_REMOTE_HOSTS: Record<string, string> = {
@@ -119,35 +119,23 @@ export function getApiBaseUrl(): string {
   return `http://127.0.0.1:${getLocalApiPort()}`;
 }
 
-function isVeritasWebHost(hostname: string): boolean {
-  return hostname === 'intel.veritasglobal.co'
-    || hostname === 'www.intel.veritasglobal.co'
-    || hostname.endsWith('.veritasglobal.co');
-}
-
 export function getConfiguredWebApiBaseUrl(): string {
   if (WS_API_URL) {
     return normalizeBaseUrl(WS_API_URL);
   }
 
-  if (typeof window === 'undefined') {
-    return '';
-  }
-
-  if (isDesktopRuntime()) {
-    return '';
-  }
-
-  const hostname = window.location?.hostname ?? '';
-  if (!isVeritasWebHost(hostname)) {
-    return '';
-  }
-
-  return DEFAULT_WEB_API_URL;
+  // On Vercel, API routes are same-origin serverless functions.
+  // No redirect needed — return '' so fetch uses relative /api/* paths.
+  return '';
 }
 
 export function getCanonicalApiOrigin(): string {
-  return getConfiguredWebApiBaseUrl() || DEFAULT_WEB_API_URL;
+  const configured = getConfiguredWebApiBaseUrl();
+  if (configured) return configured;
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin;
+  }
+  return DEFAULT_WEB_API_URL;
 }
 
 export function getRemoteApiBaseUrl(): string {
@@ -212,7 +200,7 @@ const APP_HOSTS = new Set([
   'intel.veritasglobal.co',
   'www.intel.veritasglobal.co',
   'tech.intel.veritasglobal.co',
-  'api.intel.veritasglobal.co',
+  // api.intel.veritasglobal.co removed — API is same-origin on Vercel
   'localhost',
   '127.0.0.1',
   ...extractHostnames(WS_API_URL, ENV.VITE_WS_RELAY_URL),
